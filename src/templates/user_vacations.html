@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}Vacations{% endblock title %}
+{% block content %}
+<header>
+    <div class="navbar fixed-top navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="row w-100">
+                <div class="col-md-2 col-sm-2 coll-xs-3 offset-md-10 offset-sm-10 offset-xs-9">
+                    {% set user = session.get("current_user") %}
+                    <div class="user-container">
+                        <div class="welcome-user">Welcome: <span class="user-name">{{ user.first_name }} {{
+                                user.last_name }}</span></div>
+                        <div><a href="{{ url_for('auth_view.logout') }}" class="logout">Logout</a></div>
+                    </div>
+                    <div class="ico-container"><i class="fa-solid fa-user user-ico"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="container-fluid">
+        <div class="row">
+            {% for vacation in vacations %}
+            <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+                <div class="card" style="width: 26rem;">
+                    <a href="{{ url_for( 'likes_view.like', id=vacation.id ) }}"
+                        class="btn btn-sm {{'btn-reddish' if vacation.liked==1 else 'btn-light' }} like-btn">
+                        <i class="{{ 'fa-solid fa-heart' if vacation.liked==1 else 'fa-regular fa-heart' }}"></i>
+                        <span class="counter">{{ vacation.likes_count }}</span>Likes
+                    </a>
+                    <span class="card-city">{{ vacation.country }}</span>
+                    <img src="{{ url_for('vacations_view.get_image', image_name = (vacation.image if vacation.image else '_')) }}"
+                        class="card-img-top" alt="{{ vacation.country }}">
+                    <div class="card-head">
+                        <i class="fa-solid fa-calendar"></i>
+                        {{ vacation.start_date }} - {{ vacation.end_date }}
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">{{ vacation.description }}</p>
+                    </div>
+                    <div card="card-footer">
+                        <button class="btn btn-lg btn-dark" style="width:100%">${{ '%.2f'|format(vacation.price)
+                            }}</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</main>
+{% endblock content %}

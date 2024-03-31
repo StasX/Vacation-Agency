@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block title %} Page not found {% endblock title %}
+{% block content %}
+<header></header>
+<main>
+    <div class="error-page">
+        <h1>Error</h1>
+        <div class="large">5<i class="fa-solid fa-skull"></i>0</div>
+        <h3>Not always everything goes right!</h3>
+        <h5>Have a more luck in retry.</h5>
+        <div>
+            <button class="btn btn-primary btn-lg" onclick="history.go()">Reload</button>
+        </div>
+    </div>
+</main>
+{% endblock content %}

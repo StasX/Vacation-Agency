@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+
+{% block title %}Register{% endblock title %}
+{% block content %}
+<header>
+    <div class="navbar fixed-top navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="row w-100">
+                <div class="col-md-2 col-sm-2 coll-xs-3 offset-md-10 offset-sm-10 offset-xs-9">
+                    <div class="user-container">
+                        <div class="welcome-user">Welcome: <span class="user-name">Guest</span></div>
+                        <div><a href="{{ url_for('auth_view.login') }}" class="logout">Please login to continue...</a>
+                        </div>
+                    </div>
+                    <div class="ico-container"><i class="fa-solid fa-user user-ico"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="container form-container">
+        <div class="row justify-content-center">
+            <form method="post" class="col col-lg-4 col-md-6">
+                <h3>Register</h3>
+                <label for="first-name">first name</label>
+                <input type="text" id="first-name" name="first_name" value="{{ user.first_name }}" class="form-control"
+                    required minlength="2" maxlength="32">
+                <label for="last-name">last name</label>
+                <input type="text" id="last-name" name="last_name" value="{{ user.last_name }}" class="form-control"
+                    required required minlength="2" maxlength="32">
+                <label for="email">email</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" required>
+                <label for="password"> password</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1"><i class="fa-regular fa-eye"
+                            id="passwordIcon"></i></span>
+                    <input type="password" id="password" name="password" class="form-control" aria-label="Password"
+                        aria-describedby="basic-addon1" required minlength="4">
+                </div>
+                <div class="btn-row">
+                    <button type="submit" class="btn btn-dark">Register</button>
+                </div>
+
+                {% if error %}
+                <div class="alert alert-light" role="alert">{{ error }}</div>
+                {% endif %}
+
+                <div class="question">already a member?</div>
+                <div>
+                    <a href="{{ url_for('auth_view.login') }}">login</a>
+                </div>
+            </form>
+        </div>
+        {# 👇 This script allow to show / hide passwords #}
+        <script src="{{ url_for('static', filename='js/password.js') }}"></script>
+    </div>
+</main>
+{% endblock content %}

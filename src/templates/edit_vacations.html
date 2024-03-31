@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+
+{% block title %} Add Vacation {% endblock title %}
+{% block content %}
+<header>
+    <div class="navbar fixed-top navbar-light bg-light">
+        <div class="container-fluid">
+            <div class="row w-100">
+                <div class="col-md-2 col-sm-2 coll-xs-3 offset-md-10 offset-sm-10 offset-xs-9">
+                    {% set user = session.get("current_user") %}
+                    <div class="user-container">
+                        <div class="welcome-user">Welcome: <span class="user-name">{{ user.first_name }} {{
+                                user.last_name }}</span></div>
+                        <div><a href="{{ url_for('auth_view.logout') }}" class="logout">Logout</a></div>
+                    </div>
+                    <div class="ico-container"><i class="fa-solid fa-user user-ico"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <div class="container form-container">
+        <div class="row justify-content-center">
+            <form method="post" id="vacationForm" class="col col-lg-4 col-md-6" enctype="multipart/form-data"
+                onsubmit="validateVacationForm(event)">
+                <h3>Edit Vacation</h3>
+                <div class="label">country</div>
+                <div class="dropdown">
+                    <button id="countrySelector" class="btn btn-outline-dark dropdown-toggle w-100" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ vacation.country }}
+                    </button>
+                    <ul class="dropdown-menu w-100 countries-list">
+                        {% for c in countries %}
+                        <li onclick="selectCountry('{{ c.country }}','{{ c.country_id }}')">{{ c.country }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <input type="hidden" id="countryBox" value="{{ vacation.country_id }}" name="country"
+                    class="form-control" required>
+                <label for="description">description</label>
+                <textarea id="description" name="description" class="form-control"
+                    required>{{ vacation.description }}</textarea>
+                <label for="startDate">start on</label>
+                <input type="date" id="startDate" name="start_date" value="{{ vacation.start_date }}"
+                    class="form-control" required>
+                <label for="endDate">end on</label>
+                <input type="date" id="endDate" name="end_date" value="{{ vacation.end_date }}" class="form-control"
+                    onchange="validateEndDate()" required>
+                <label for="priceBox">price</label>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">$</span>
+                    <input type="number" id="priceBox" name="price" step="0.01" value="{{ vacation.price }}"
+                        class="form-control" aria-label="Price" aria-describedby="basic-addon1"
+                        onblur="this.value=parseFloat(this.value).toFixed(2)" min="0" max="10000" required>
+                </div>
+                <label for="image">cover image</label>
+                <div class="file-container">
+                    <img id="preview"
+                        src="{{ url_for('vacations_view.get_image', image_name = (vacation.image if vacation.image else '_')) }}"
+                        alt="{{ vacation.country }}" class="rounded  w-100 preview">
+                    <div class="w-100">
+                        <span id="imgBtn" class="btn btn-sm btn-file w-50 m-auto">
+                            Change image <input type="file" id="image" name="image" accept="image/*"
+                                onchange="displayImage()">
+                        </span>
+                    </div>
+                </div>
+                {% if error %}
+                <div>
+                    <div class="alert alert-light" role="alert">{{ error }}</div>
+                </div>
+                {% endif %}
+                <div>
+                    <button type="submit" class="btn btn-lg btn-dark ">Update Vacation</button>
+                </div>
+                <div>
+                    <a href="{{ url_for('vacations_view.list') }}" class="btn btn-lg btn-dark-outline ">Cancel</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</main>
+{% endblock content %}
