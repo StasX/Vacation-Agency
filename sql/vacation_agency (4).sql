@@ -28,7 +28,7 @@ DELIMITER $$
 -- Procedures
 --
 DROP PROCEDURE IF EXISTS `add_user`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `add_user` (IN `first_name` VARCHAR(15), IN `last_name` VARCHAR(15), IN `an_email` VARCHAR(30), IN `a_password` VARCHAR(50), IN `a_role_id` INT(11))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_user` (IN `first_name` VARCHAR(15), IN `last_name` VARCHAR(15), IN `an_email` VARCHAR(30), IN `a_password` VARCHAR(128), IN `a_role_id` INT(11))   BEGIN
 		INSERT INTO users (first_name, last_name, email, password, role_id) VALUES (first_name, last_name, an_email, a_password, a_role_id);
 	END$$
 
@@ -74,7 +74,7 @@ SELECT COUNT(*) AS likes_count FROM likes WHERE vacation_id = a_vacation_id;
 END$$
 
 DROP PROCEDURE IF EXISTS `get_user`$$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_user` (IN `an_email` VARCHAR(50), IN `a_password` VARCHAR(50))   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_user` (IN `an_email` VARCHAR(50), IN `a_password` VARCHAR(128))   BEGIN
 	SELECT user_id AS id, first_name, last_name, email, password, role_id AS role FROM users WHERE email=an_email AND password=a_password;
 END$$
 
@@ -196,7 +196,7 @@ CREATE TABLE `users` (
   `first_name` varchar(15) NOT NULL,
   `last_name` varchar(15) NOT NULL,
   `email` varchar(30) NOT NULL,
-  `password` varchar(50) NOT NULL,
+  `password` varchar(128) NOT NULL,
   `role_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
